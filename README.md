@@ -1,6 +1,7 @@
-[![TicciX Copyright](https://i.imgur.com/7S2IFBc.png)](https://github.com/Ticcix/)
 
-#Download Page V1.0
+[![TicciX Copyright](https://i.imgur.com/7S2IFBc.png)](https://github.com/Ticcix/) [![TicciX Copyright](https://camo.githubusercontent.com/4e46825f5519748c0efc0f74e7227de0579ce4c6/68747470733a2f2f692e696d6775722e636f6d2f4f77594b6f56622e706e67)](https://ticcix.github.io/download_page/)
+
+
 
 Downpage V1.0 - module for attachments to DLE with a timer to make a separate page for download. That is, when you click on the file link, another page opens, where there is already a direct link to the file on which you can place ads or something else. </br>
 
@@ -35,4 +36,4 @@ Downpage V1.0 - module for attachments to DLE with a timer to make a separate pa
 </br>
 </br>
 
-[![TicciX Copyright](https://media.flaticon.com/dist/min/img/features/production.svg)](https://ticcix.github.io/download_page/)
+[![TicciX Copyright](https://camo.githubusercontent.com/4e46825f5519748c0efc0f74e7227de0579ce4c6/68747470733a2f2f692e696d6775722e636f6d2f4f77594b6f56622e706e67)](https://ticcix.github.io/download_page/)
