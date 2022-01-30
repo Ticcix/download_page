@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dleplugin>
-	<name>Download Page V1.0</name>
-	<description>ფაილების გადმოწერა  ცალკე გვედზე</description>
+	<name>Download Page</name>
+	<description>Download files to a separate page</description>
 	<icon>engine/skins/images/ticcix.png</icon>
-	<version>1.0</version>
+	<version>1.1.2</version>
 	<dleversion>13</dleversion>
 	<versioncompare>greater</versioncompare>
-	<upgradeurl>https://ticcix.github.io/download_page/</upgradeurl>
+	<upgradeurl></upgradeurl>
 	<filedelete>0</filedelete>
-	<needplugin></needplugin>
-	<mnotice>0</mnotice>
+	<needplugin>Ticcix Updates</needplugin>
+	<mnotice>1</mnotice>
 	<mysqlinstall><![CDATA[]]></mysqlinstall>
 	<mysqlupgrade><![CDATA[]]></mysqlupgrade>
 	<mysqlenable><![CDATA[]]></mysqlenable>
@@ -20,18 +20,20 @@
 	<phpenable><![CDATA[]]></phpenable>
 	<phpdisable><![CDATA[]]></phpdisable>
 	<phpdelete><![CDATA[]]></phpdelete>
-	<notice><![CDATA[]]></notice>
+	<notice><![CDATA[<p style="color: darkred;">Fixed all errors</p>
+<p style="color: #303030;">Updated to DLE 15.X</p>
+<a href="https://github.com/Ticcix/Ticcix-Updates"  target="_blank">Please Download  And Inlsall </a>]]></notice>
 	<file name="engine/download.php">
 		<operation action="replace">
-			<searchcode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></searchcode>
-			<replacecode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver, author, date, dcount FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></replacecode>
+			<searchcode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver, driver FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></searchcode>
+			<replacecode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver, author, driver, date, dcount FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></replacecode>
 		</operation>
 		<operation action="replace">
 			<searchcode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></searchcode>
 			<replacecode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, title, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></replacecode>
 		</operation>
 		<operation action="after">
-			<searchcode><![CDATA[$url = @parse_url ( $row['onserver'] );]]></searchcode>
+			<searchcode><![CDATA[$file = new download ( 'files/'.$row['onserver'], $row['name'], $row['driver'] );]]></searchcode>
 			<replacecode><![CDATA[$timer = 10;    //დარჩენილი დრო გადმოწერის დაყებამდე
 $offline_time = 1;    //ლინკის სიცოცხლის დრო
 //////////////////////////////////////////////////////////////////////////
