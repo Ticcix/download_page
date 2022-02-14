@@ -25,10 +25,6 @@
 <a href="https://github.com/Ticcix/Ticcix-Updates"  target="_blank">Please Download  And Inlsall </a>]]></notice>
 	<file name="engine/download.php">
 		<operation action="replace">
-			<searchcode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver, driver FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></searchcode>
-			<replacecode><![CDATA[$row = $db->super_query ( "SELECT news_id, name, onserver, author, driver, date, dcount FROM " . PREFIX . "_files WHERE id ='{$id}'" );]]></replacecode>
-		</operation>
-		<operation action="replace">
 			<searchcode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></searchcode>
 			<replacecode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, title, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></replacecode>
 		</operation>
