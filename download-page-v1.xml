@@ -8,7 +8,7 @@
 	<versioncompare>greater</versioncompare>
 	<upgradeurl></upgradeurl>
 	<filedelete>0</filedelete>
-	<needplugin>Ticcix Updates</needplugin>
+	<needplugin></needplugin>
 	<mnotice>1</mnotice>
 	<mysqlinstall><![CDATA[]]></mysqlinstall>
 	<mysqlupgrade><![CDATA[]]></mysqlupgrade>
