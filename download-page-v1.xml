@@ -20,18 +20,17 @@
 	<phpenable><![CDATA[]]></phpenable>
 	<phpdisable><![CDATA[]]></phpdisable>
 	<phpdelete><![CDATA[]]></phpdelete>
-	<notice><![CDATA[<p style="color: darkred;">Fixed all errors</p>
-<p style="color: #303030;">Updated to DLE 15.X</p>
-<a href="https://github.com/Ticcix/Ticcix-Updates"  target="_blank">Please Download  And Inlsall </a>]]></notice>
+	<notice><![CDATA[<p class="fr-text-uppercase"><b><span style="color: rgb(209, 72, 65);">Fixed bug DLE 15 above</span></b></p>]]></notice>
 	<file name="engine/download.php">
 		<operation action="replace">
 			<searchcode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></searchcode>
 			<replacecode><![CDATA[$row_news = $db->super_query ( "SELECT id, autor, date, title, category, alt_name, approve, access FROM " . PREFIX . "_post LEFT JOIN " . PREFIX . "_post_extras ON (" . PREFIX . "_post.id=" . PREFIX . "_post_extras.news_id) WHERE id ='{$row['news_id']}'" );]]></replacecode>
+			<enabled>1</enabled>
 		</operation>
 		<operation action="after">
 			<searchcode><![CDATA[$file = new download ( 'files/'.$row['onserver'], $row['name'], $row['driver'] );]]></searchcode>
-			<replacecode><![CDATA[$timer = 10;    //დარჩენილი დრო გადმოწერის დაყებამდე
-$offline_time = 1;    //ლინკის სიცოცხლის დრო
+			<replacecode><![CDATA[$timer = 10;    //დარჩენილი დრო გადმოწერის დაყებამდე Remaining time before download starts
+$offline_time = 1;    //ლინკის სიცოცხლის დრო Link lifetime
 //////////////////////////////////////////////////////////////////////////
 
 if( !$_GET['hash'] OR !$_SESSION['download_timer'] OR $_GET['hash'] != md5( $id . $row['onserver'] . $_SESSION['download_timer'] ) OR $_SESSION['download_timer'] > time() OR $_SESSION['download_timer'] + $offline_time*60 < time() )
@@ -66,6 +65,50 @@ if( !$_GET['hash'] OR !$_SESSION['download_timer'] OR $_GET['hash'] != md5( $id 
     echo $tpl;
     die();
 }else $_SESSION['download_timer'] = time();]]></replacecode>
+			<enabled>1</enabled>
+			<dleversion>15</dleversion>
+			<versioncompare>less</versioncompare>
+		</operation>
+		<operation action="after">
+			<searchcode><![CDATA[$file = new download ( $uploaded_path.$row['onserver'], $row['name'], $row['driver'] );]]></searchcode>
+			<replacecode><![CDATA[$timer = 10;    //დარჩენილი დრო გადმოწერის დაყებამდე Remaining time before download starts
+$offline_time = 1;    //ლინკის სიცოცხლის დრო Link lifetime
+
+if( !$_GET['hash'] OR !$_SESSION['download_timer'] OR $_GET['hash'] != md5( $id . $row['onserver'] . $_SESSION['download_timer'] ) OR $_SESSION['download_timer'] > time() OR $_SESSION['download_timer'] + $offline_time*60 < time() )
+{
+    $_SESSION['download_timer'] = time() + $timer;
+
+    $cat_info = get_vars( "category" );
+    if( ! is_array( $cat_info ) ) {
+        $cat_info = array ();
+        $db->query( "SELECT * FROM " . PREFIX . "_category ORDER BY posi ASC" );
+        while ( $row = $db->get_row() ) $cat_info[$row['id']] = array_map("stripslashes",$row);
+        set_vars( "category", $cat_info );
+        $db->free();
+    }
+  
+    $tpl = file_get_contents( ROOT_DIR . "/templates/{$config['skin']}/downpage.tpl" );
+
+    $tpl = str_ireplace( "{category}", $cat_info[$row_news['category']]['name'], $tpl );
+    $tpl = str_ireplace( "{category-link}", $config['http_home_url'] . get_url( intval($row_news['category'] )) . "/", $tpl );
+    $tpl = str_ireplace( "{author}", "" . $row['author'] . "", $tpl );
+    $tpl = str_ireplace( "{title}", stripslashes( $row_news['title'] ), $tpl );   
+    $tpl = str_ireplace( "{full_link}", $full_link, $tpl );  
+    $tpl = str_ireplace( "{filename}", stripslashes( $row['name'] ), $tpl );
+    $tpl = str_ireplace( "{size}", formatsize( @filesize( ROOT_DIR . '/uploads/files/' . $row['onserver'] ) ), $tpl );
+    $tpl = str_ireplace( "{date}", date( "d.m.Y, H:i", $row['date'] ), $tpl );
+    $tpl = str_ireplace( "{count}", $row['dcount'], $tpl );
+    $tpl = str_ireplace( "{timer}", $timer, $tpl );
+    $tpl = str_ireplace( "{downlink}", "index.php?do=download&id=$id&hash=" . md5( $id . $row['onserver'] . $_SESSION['download_timer'] ), $tpl );
+    $tpl = str_ireplace( "{charset}", $config['charset'], $tpl );
+    $tpl = str_ireplace( "/templates/", $config['http_home_url'] . 'templates/' . $config['skin'], $tpl );
+  
+    echo $tpl;
+    die();
+}else $_SESSION['download_timer'] = time();]]></replacecode>
+			<enabled>1</enabled>
+			<dleversion>15</dleversion>
+			<versioncompare>greater</versioncompare>
 		</operation>
 	</file>
 </dleplugin>
